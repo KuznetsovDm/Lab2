@@ -1,0 +1,16 @@
+gcc -c main.c -o main.o
+
+gcc -c revert_string.c -o revert_string_s.o
+gcc -c -fPIC revert_string.c -o revert_string_d.o
+
+ar rcs lib_s.a revert_string_s.o
+gcc -static main.o -L./ -l_s -o statically-linked
+
+gcc -shared revert_string_d.o -o ./lib_d.so
+gcc main.o -o use-shared-library -L./ -l_d
+
+LD_LIBRARY_PATH=/projects/Lab2/src/revert_string/
+export LD_LIBRARY_PATH
+
+./statically-linked qwer
+./use-shared-library qwe
